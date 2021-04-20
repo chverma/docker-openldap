@@ -5,9 +5,12 @@ then
 	echo "usage: ./config.sh mydomain.com users myorganization_name ldap_password"
         exit
 fi
-if [ ! -f docker-compose.yml.bak ]
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+echo $SCRIPT_DIR
+exit
+if [ ! -f $SCRIPT_DIR/docker-compose.yml.bak ]
 then
- cp docker-compose.yml docker-compose.yml.bak
+ cp $SCRIPT_DIR/docker-compose.yml $SCRIPT_DIR/docker-compose.yml.bak
 fi
 
 
@@ -20,4 +23,4 @@ LDAP_PASSWORD=$4
 # The sed here prevents a slash
 #PASSWORD=$(openssl rand -base64 32 | sed "s/\//#/g")
 
-sed  -i -e "s/mydomain/$DOMAIN/g" -e "s/domtld/$DOMAIN_TLD/g" -e "s/subdomain/$SUBDOMAIN_USERS_ADDRESS/g" -e "s/MYORG/$ORG_NAME/g" -e "s/passToChange/$LDAP_PASSWORD/g" docker-compose.yml
+sed  -i -e "s/mydomain/$DOMAIN/g" -e "s/domtld/$DOMAIN_TLD/g" -e "s/subdomain/$SUBDOMAIN_USERS_ADDRESS/g" -e "s/MYORG/$ORG_NAME/g" -e "s/passToChange/$LDAP_PASSWORD/g" $SCRIPT_DIR/docker-compose.yml
