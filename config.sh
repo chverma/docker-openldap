@@ -5,8 +5,12 @@ then
 	echo "usage: ./config.sh mydomain.com users myorganization_name"
         exit
 fi
+if [ ! -f docker-compose.yml.bak ]
+then
+ cp docker-compose.yml docker-compose.yml.bak
+fi
 
-cp docker-compose.yml docker-compose.yml.bak
+
 DOMAIN=$(echo $1 | cut -d. -f1)
 DOMAIN_TLD=$(echo $1 | cut -d. -f2)
 SUBDOMAIN_USERS_ADDRESS=$2
