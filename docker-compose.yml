@@ -6,7 +6,7 @@ services:
     environment:
       LDAP_LOG_LEVEL: "256"
       LDAP_ORGANISATION: "MYORG"
-      LDAP_DOMAIN: "mydomain.com"
+      LDAP_DOMAIN: "mydomain.domtld"
       LDAP_BASE_DN: ""
       LDAP_ADMIN_PASSWORD: "passToChange"
       LDAP_CONFIG_PASSWORD: "passToChange"
@@ -42,7 +42,7 @@ services:
     # For replication to work correctly, domainname and hostname must be
     # set correctly so that "hostname"."domainname" equates to the
     # fully-qualified domain name for the host.
-    domainname: "mydomain.com"
+    domainname: "mydomain.domtld"
     hostname: "ldap"
   #phpldapadmin:
   #  image: osixia/phpldapadmin:latest
@@ -62,14 +62,14 @@ services:
       - "8882:80"
       - "8883:443"
     environment:
-      SERVER_HOSTNAME: "users.mydomain.com"
-      LDAP_URI: "ldap://ldap.mydomain.com"
-      LDAP_BASE_DN: "dc=mydomain,dc=com"
+      SERVER_HOSTNAME: "subdomain.mydomain.domtld"
+      LDAP_URI: "ldap://subdomain.mydomain.domtld"
+      LDAP_BASE_DN: "dc=mydomain,dc=domtld"
       LDAP_BASE_CN: "dc=mydomain,dc=com"
       LDAP_REQUIRE_STARTTLS: "false"
       LDAP_ADMINS_GROUP: "admins"
-      LDAP_ADMIN_BIND_DN: "cn=admin,dc=mydomain,dc=com"
+      LDAP_ADMIN_BIND_DN: "cn=admin,dc=mydomain,dc=domtld"
       LDAP_ADMIN_BIND_PWD: "passToChange"
       LDAP_USES_NIS_SCHEMA: "true"
-      EMAIL_DOMAIN: "mydomain.com"
+      EMAIL_DOMAIN: "mydomain.domtld"
 
