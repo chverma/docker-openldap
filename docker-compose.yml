@@ -1,0 +1,75 @@
+version: '2'
+services:
+  openldap:
+    image: osixia/openldap:1.4.0
+    container_name: openldap
+    environment:
+      LDAP_LOG_LEVEL: "256"
+      LDAP_ORGANISATION: "MYORG"
+      LDAP_DOMAIN: "mydomain.com"
+      LDAP_BASE_DN: ""
+      LDAP_ADMIN_PASSWORD: "passToChange"
+      LDAP_CONFIG_PASSWORD: "passToChange"
+      LDAP_READONLY_USER: "false"
+      #LDAP_READONLY_USER_USERNAME: "readonly"
+      #LDAP_READONLY_USER_PASSWORD: "readonly"
+      LDAP_RFC2307BIS_SCHEMA: "false"
+      LDAP_BACKEND: "mdb"
+      LDAP_TLS: "true"
+      LDAP_TLS_CRT_FILENAME: "ldap.crt"
+      LDAP_TLS_KEY_FILENAME: "ldap.key"
+      LDAP_TLS_DH_PARAM_FILENAME: "dhparam.pem"
+      LDAP_TLS_CA_CRT_FILENAME: "ca.crt"
+      LDAP_TLS_ENFORCE: "false"
+      LDAP_TLS_CIPHER_SUITE: "SECURE256:-VERS-SSL3.0"
+      LDAP_TLS_VERIFY_CLIENT: "demand"
+      LDAP_REPLICATION: "false"
+      #LDAP_REPLICATION_CONFIG_SYNCPROV: "binddn="cn=admin,cn=config" bindmethod=simple credentials=$$LDAP_CONFIG_PASSWORD searchbase="cn=config" type=refreshAndPersist retry="60 +" timeout=1 starttls=critical"
+      #LDAP_REPLICATION_DB_SYNCPROV: "binddn="cn=admin,$$LDAP_BASE_DN" bindmethod=simple credentials=$$LDAP_ADMIN_PASSWORD searchbase="$$LDAP_BASE_DN" type=refreshAndPersist interval=00:00:00:10 retry="60 +" timeout=1 starttls=critical"
+      #LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://ldap.example.org','ldap://ldap2.example.org']"
+      KEEP_EXISTING_CONFIG: "false"
+      LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
+      LDAP_SSL_HELPER_PREFIX: "ldap"
+    tty: true
+    stdin_open: true
+    volumes:
+      - /var/lib/ldap
+      - /etc/ldap/slapd.d
+      - /container/service/slapd/assets/certs/
+    ports:
+      - "389:389"
+      - "636:636"
+    # For replication to work correctly, domainname and hostname must be
+    # set correctly so that "hostname"."domainname" equates to the
+    # fully-qualified domain name for the host.
+    domainname: "mydomain.com"
+    hostname: "ldap"
+  #phpldapadmin:
+  #  image: osixia/phpldapadmin:latest
+  #  container_name: phpldapadmin
+  #  environment:
+  #    PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+  #    PHPLDAPADMIN_HTTPS: "false"
+  #  ports:
+  #    - "8080:80"
+  #    - "8081:443"
+  #  depends_on:
+  #    - openldap
+  ldapusermanager:
+    image: wheelybird/ldap-user-manager:v1.2
+    container_name: lum
+    ports:
+      - "8882:80"
+      - "8883:443"
+    environment:
+      SERVER_HOSTNAME: "users.mydomain.com"
+      LDAP_URI: "ldap://ldap.mydomain.com"
+      LDAP_BASE_DN: "dc=mydomain,dc=com"
+      LDAP_BASE_CN: "dc=mydomain,dc=com"
+      LDAP_REQUIRE_STARTTLS: "false"
+      LDAP_ADMINS_GROUP: "admins"
+      LDAP_ADMIN_BIND_DN: "cn=admin,dc=mydomain,dc=com"
+      LDAP_ADMIN_BIND_PWD: "passToChange"
+      LDAP_USES_NIS_SCHEMA: "true"
+      EMAIL_DOMAIN: "mydomain.com"
+
