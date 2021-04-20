@@ -63,7 +63,7 @@ services:
       - "8883:443"
     environment:
       SERVER_HOSTNAME: "subdomain.mydomain.domtld"
-      LDAP_URI: "ldap://subdomain.mydomain.domtld"
+      LDAP_URI: "ldap://ldap.mydomain.domtld"
       LDAP_BASE_DN: "dc=mydomain,dc=domtld"
       LDAP_BASE_CN: "dc=mydomain,dc=com"
       LDAP_REQUIRE_STARTTLS: "false"
