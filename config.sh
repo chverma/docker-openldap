@@ -6,8 +6,7 @@ then
         exit
 fi
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
-echo $SCRIPT_DIR
-exit
+
 if [ ! -f $SCRIPT_DIR/docker-compose.yml.bak ]
 then
  cp $SCRIPT_DIR/docker-compose.yml $SCRIPT_DIR/docker-compose.yml.bak
